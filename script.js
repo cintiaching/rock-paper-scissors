@@ -13,8 +13,7 @@ function getComputerChoice() {
 
 
 function getHumanChoice() {
-    let choice = prompt("Rock, paper, scissors?");
-    return choice
+    return humanChoice
 }
 
 
@@ -46,8 +45,26 @@ function playGame() {
 
         result = playRound(humanSelection, computerSelection);
         console.log(result)
-    } 
+    }
+
+    // display result in div
+
+    if (humanScore >= 5 || computerScore >= 5) {
+        // Display the running score
+        // and announce a winner of the game once one player reaches 5 points.
+    }
+
 }
 
-playGame();
+// event listener for button
+let humanChoice = null
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        humanChoice = button.className;
+    });
+});
+console.log(humanChoice)
 
+// play game
+playGame();
