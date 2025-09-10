@@ -1,4 +1,3 @@
-console.log("Hello World")
 
 function getComputerChoice() {
     rand = Math.random();
@@ -12,15 +11,10 @@ function getComputerChoice() {
 }
 
 
-function getHumanChoice() {
-    let choice = prompt("Rock, paper, scissors?");
-    return choice
-}
-
-
 function playGame() {
     let humanScore = 0;
     let computerScore = 0;
+    let gameActive = true; // Track if the game is active
     
     function playRound(humanChoice, computerChoice) {
         humanChoice = humanChoice.toLowerCase()
@@ -40,14 +34,67 @@ function playGame() {
 
     }
 
-    for (let i = 1; i <= 5; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
+    const scoreContainer = document.querySelector("div.score")
+    const resultContainer = document.querySelector("div.result");
+    const resetButton = document.createElement("button");
+    resetButton.textContent = "Reset Game";
+    resetButton.style.display = "none"; // Hide initially
 
-        result = playRound(humanSelection, computerSelection);
-        console.log(result)
-    } 
-}
+    resetButton.addEventListener("click", () => {
+        // Reset scores
+        humanScore = 0;
+        computerScore = 0;
+
+        // Clear round results
+        resultContainer.innerHTML = ""; // Clear all results
+        scoreContainer.textContent = `Your score: ${humanScore} | Computer score: ${computerScore}`;
+
+        // Hide reset button
+        resetButton.style.display = "none";
+
+        gameActive = true; // Reset game status
+    });
+
+    document.body.appendChild(resetButton); // Add reset button to the DOM
+
+    scoreContainer.textContent = `Your score: ${humanScore} | Computer score ${computerScore}`;
+
+    // event listener for button
+    const buttons = document.querySelectorAll("button.choice");
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            if (!gameActive) return;
+
+            // play round
+            const humanChoice = button.className.split(" ")[1];
+            const computerChoice = getComputerChoice();
+            result = playRound(humanChoice, computerChoice);
+
+            // update score
+            scoreContainer.textContent = `Your score: ${humanScore} | Computer score ${computerScore}`;
+
+            // show round result
+            const content = document.createElement("div");
+            content.textContent = result;
+            resultContainer.appendChild(content);
+
+            if (humanScore >= 5 || computerScore >= 5) {
+                // Display the running score
+                // and announce a winner of the game once one player reaches 5 points.
+                const winner = humanScore >= 5 ? "You win the game!" : "Computer wins the game!";
+
+                const finalResult = document.createElement("div");
+                finalResult.textContent = winner;
+                resultContainer.appendChild(finalResult);
+                
+                gameActive = false; // Set game status to inactive
+                resetButton.style.display = "block";
+                
+            }
+        });
+    });
+
+};
 
 playGame();
-
