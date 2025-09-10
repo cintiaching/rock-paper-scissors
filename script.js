@@ -1,4 +1,3 @@
-console.log("Hello World")
 
 function getComputerChoice() {
     rand = Math.random();
@@ -9,11 +8,6 @@ function getComputerChoice() {
     } else {
         return "scissors"
     }
-}
-
-
-function getHumanChoice() {
-    return humanChoice
 }
 
 
@@ -39,32 +33,26 @@ function playGame() {
 
     }
 
-    for (let i = 1; i <= 5; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
+    // event listener for button
+    const buttons = document.querySelectorAll("button");
 
-        result = playRound(humanSelection, computerSelection);
-        console.log(result)
-    }
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            console.log(button.className)
+            const humanChoice = button.className;
+            const computerChoice = getComputerChoice();
+            result = playRound(humanChoice, computerChoice)
+            console.log(result)
 
-    // display result in div
-
-    if (humanScore >= 5 || computerScore >= 5) {
-        // Display the running score
-        // and announce a winner of the game once one player reaches 5 points.
-    }
-
-}
-
-// event listener for button
-let humanChoice = null
-const buttons = document.querySelectorAll("button");
-buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-        humanChoice = button.className;
+            console.log(humanScore, computerScore)
+            if (humanScore >= 5 || computerScore >= 5) {
+                // Display the running score
+                // and announce a winner of the game once one player reaches 5 points.
+                console.log(humanScore, computerScore)
+            }
+        });
     });
-});
-console.log(humanChoice)
 
-// play game
+};
+
 playGame();
